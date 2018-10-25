@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <!-- MyBatis配置开始 -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!--dataSource属性指定要用到的连接池 -->
+        <property name="dataSource" ref="baseDataSource" />
+        <!--typeAliasePackage属性制定扫描实体包名 -->
+        <property name="typeAliasesPackage"
+                  value="com.feiniu.fresh.entity;com.feiniu.datasource.model" />
+        <!-- 所有配置的mapper文件 -->
+        <property name="mapperLocations">
+            <list>
+                <value>classpath*:com/wangchen/example/springboot/dao/mapper/*.xml</value>
+            </list>
+        </property>
+        <!--<property name="plugins">
+            <array>
+                &lt;!&ndash; 分表插件 &ndash;&gt;
+                <bean id="tableSegInterceptor"
+                      class="com.feiniu.datasource.mybatis.ShardingInterceptor">
+                </bean>
+            </array>
+        </property>-->
+    </bean>
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.feiniu.fresh.dao;com.feiniu.datasource.dao" />
+    </bean>
+    <!-- MyBatis配置结束 -->
+
+</beans>

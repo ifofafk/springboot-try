@@ -1,0 +1,100 @@
+server:
+  port: 8080
+
+spring:
+  # filter some conflicts. Configure datasource by myself will be confict with springboot's autoconfigure.
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+  datasource:
+    name: springboot
+    type: com.alibaba.druid.pool.DruidDataSource
+    # druid configuration
+    druid:
+      filter: stat
+      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=3000
+      # mysql driver
+      driver-class-name: com.mysql.jdbc.Driver
+      # basic attributes
+      url: jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&?zeroDateTimeBehavior=convertToNull
+      username: root
+      password: 123456
+      # connection pool attributes
+      initial-size: 1
+      min-idle: 1
+      max-active: 20
+      # Gets the connection wait timeout
+      max-wait: 60000
+      # How often is a check taken to detect idle connections that need to be closed
+      time-between-eviction-runs-millis: 60000
+  thymeleaf:
+    prefix: classpath:/templates/
+    check-template-location: true
+    suffix: .html
+    encoding: utf-8
+    mode: LEGACYHTML5
+    cache: false
+  # file upload
+  servlet:
+      multipart:
+        max-file-size: 10Mb
+        max-request-size: 100Mb
+  devtools:
+    livereload:
+      enabled: true
+      port: 35729
+    restart:
+      enabled: true
+
+    #redis缓存
+#    redis:
+#      #redis数据库索引，默认是0
+#      database: 0
+#      #redis服务器地址，这里用本地的redis
+#      host: 127.0.0.1
+#      # Redis服务器连接密码（默认为空）
+#      password:
+#      #redis服务器连接端口，默认是6379
+#      port: 6379
+#      # 连接超时时间（毫秒）
+#      timeout: 1000
+#      jedis:
+#        pool:
+#          # 连接池最大连接数（使用负值表示没有限制）
+#          max-active: 8
+#          # 连接池最大阻塞等待时间（使用负值表示没有限制
+#          max-wait: -1
+#          # 连接池中的最大空闲连接
+#          max-idle: 8
+#          # 连接池中的最小空闲连接
+#          min-idle: 0
+
+#jdbc:
+#  driverLocation: E:\apache-maven-3.5.4\myRepository\mysql\mysql-connector-java\5.1.46\mysql-connector-java-5.1.46.jar
+
+mybatis:
+  mapper-locations: classpath:com.wangchen.example.springboot.dao.mapper/*.xml
+  type-aliases-package: com.wangchen.example.springboot.entity
+  configuration:
+    # 使用jdbc的getGeneratedKeys 可以获取数据库自增主键值
+    use-generated-keys: true
+    # 使用列别名替换列名，默认true。如：select name as title from table
+    use-column-label: true
+    # 开启驼峰命名转换，如：Table(create_time) -> Entity(createTime)
+    map-underscore-to-camel-case: true
+
+# 分页插件
+pagehelper:
+  pagehelperDialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+
+# 使用系统默认的logBack
+logging:
+  level:
+    org.springframework.web: DEBUG
+    com.wangchen.example.springboot.dao.mapper: DEBUG
+  file: E:\JetBrains\IDEAworkspqce\logs\springboot\Log.log
+  pattern:
+    console: %d{yyyy/MM/dd-HH:mm:ss} [%thread] %-5level %logger- %msg%n
+    file: %d{yyyy/MM/dd-HH:mm} [%thread] %-5level %logger- %msg%n
+
